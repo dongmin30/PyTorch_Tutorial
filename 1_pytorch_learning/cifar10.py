@@ -145,3 +145,15 @@ with torch.no_grad():
 for classname, correct_count in correct_pred.items():
   accuracy = 100 * float(correct_count) / total_pred[classname]
   print(f'Accuracy for class: {classname:5s} is {accuracy:.1f} %')
+  
+# GPU에서 학습하기 
+device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+
+# CUDA 기기가 존재한다면, 아래 코드가 CUDA 장치를 출력
+print(device)
+
+# 이제 해당 메소드를 통해 모든 모듈의 매개변수와 버퍼를 CUDA tensor로 변경
+net.to(device)
+
+# 또한, 각 단계에서 입력(input)과 정답(target)도 GPU로 보냄
+input, labels = data[0].to(device), data[1].to(device)
